@@ -10,4 +10,10 @@ server.get("/", (req, res) => {
   res.send("api up and running");
 });
 
+server.post("/api/register");
+
+server.post("/api/login");
+
+server.get("/api/users");
+
 module.exports = server;
