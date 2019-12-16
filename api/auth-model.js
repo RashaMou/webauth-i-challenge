@@ -3,7 +3,8 @@ const db = require("../data/db-config");
 module.exports = {
   register,
   getUsers,
-  findById
+  findById,
+  findBy
 };
 
 function getUsers() {
@@ -11,7 +12,9 @@ function getUsers() {
 }
 
 function findById(id) {
-  return db("users").where({ id });
+  return db("users")
+    .where({ id })
+    .first();
 }
 
 function register(userData) {
@@ -21,4 +24,10 @@ function register(userData) {
       const [id] = ids;
       return findById(id);
     });
+}
+
+function findBy(filter) {
+  return db("users")
+    .select("id", "username", "password")
+    .where(filter);
 }
