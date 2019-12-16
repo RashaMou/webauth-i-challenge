@@ -1,19 +1,9 @@
 const express = require("express");
 const helmet = require("helmet");
-
 const server = express();
-
-server.use(helmet());
+const apiRouter = require("./api-router");
 server.use(express.json());
-
-server.get("/", (req, res) => {
-  res.send("api up and running");
-});
-
-server.post("/api/register");
-
-server.post("/api/login");
-
-server.get("/api/users");
+server.use(helmet());
+server.use("/api", apiRouter);
 
 module.exports = server;
