@@ -13,7 +13,7 @@ router.get("/users", restricted, async (req, res) => {
   }
 });
 
-router.post("/register", async (req, res) => {
+router.post("/register", validateRegistration, async (req, res) => {
   let user = req.body;
   const hash = bcrypt.hashSync(user.password, 12);
   user.password = hash;
@@ -55,6 +55,20 @@ async function restricted(req, res, next) {
       res.status(500).json({ message: "Unexpected error" });
     }
   } else res.status(400).json({ message: "No credentials provided" });
+}
+
+// Registration Middleware
+
+async function validateRegistration(req, res, next) {
+  const { username, password } = req.body;
+  const user = await Users.findBy({ username }).first();
+  if (!username || !password) {
+    res.status(400).json("Please provide a username and password");
+  } else if (user.username !== username) {
+    next();
+  } else {
+    res.status(400).json("That username already exists. Please try another");
+  }
 }
 
 module.exports = router;
