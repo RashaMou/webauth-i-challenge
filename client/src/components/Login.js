@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 const Login = () => {
   const [user, setUser] = useState({
@@ -8,12 +9,18 @@ const Login = () => {
 
   const handleChange = e => {
     setUser({ ...user, [e.target.name]: e.target.value });
-    console.log(user);
   };
 
   const onSubmit = e => {
     e.preventDefault();
+    axios
+      .post("http://localhost:5000/api/login", user)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(error => console.error(error));
   };
+
   return (
     <form onSubmit={onSubmit}>
       <label htmlFor="username" />
@@ -34,3 +41,5 @@ const Login = () => {
     </form>
   );
 };
+
+export default Login;
