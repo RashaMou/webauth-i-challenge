@@ -1,11 +1,11 @@
 const express = require("express");
 const helmet = require("helmet");
 const cors = require("cors");
-const server = express();
 const sessions = require("express-session");
 const knexSessionStore = require("connect-session-knex")(sessions);
 const knex = require("../data/db-config");
 const apiRouter = require("./api-router");
+const server = express();
 
 const sessionConfiguration = {
   name: "oatmealchocolatechip",
@@ -28,7 +28,11 @@ const sessionConfiguration = {
 server.use(express.json());
 server.use(helmet());
 server.use(cors());
-server.use("/api", apiRouter);
 server.use(sessions(sessionConfiguration));
+server.use("/api", apiRouter);
+
+server.get("/", (req, res) => {
+  res.send("api up and running");
+});
 
 module.exports = server;
